@@ -1,0 +1,29 @@
+name: Bump hea submodule in blog
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  bump-blog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout blog
+        uses: actions/checkout@v6.0.2
+        with:
+          repository: Alexsandr0x/blog
+          token: ${{ secrets.BLOG_REPO_TOKEN }}
+          submodules: recursive
+
+      - name: Update hea submodule to latest main
+        run: |
+          git submodule update --remote content/hea
+          if git diff --quiet -- content/hea; then
+            echo "content/hea already up to date, nothing to push"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/hea
+          git commit -m "chore(hea): bump submodule to ${GITHUB_SHA::7}"
+          git push

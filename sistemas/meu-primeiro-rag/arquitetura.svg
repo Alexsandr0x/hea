@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2100 970" role="img" aria-labelledby="title desc">
+  <title id="title">personalRAG: arquitetura de contêineres</title>
+  <desc id="desc">Diagrama C4 nível 2 do personalRAG. Agentes acessam o serviço MCP pelo proxy local. O CLI envia documentos Markdown ao Cloud Storage, e um job diário sincroniza o bucket com o Firestore. O serviço MCP consulta Firestore e Vertex AI.</desc>
+  <defs>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#26343c" stroke-width="1" opacity=".42"/></pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#46d9e8"/></marker>
+    <style>
+      .mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+      .label{font-family:'Chakra Petch',system-ui,sans-serif;font-weight:700;letter-spacing:2px}
+      .title{font-family:'Shippori Mincho',Georgia,serif;font-weight:800}
+      .node{fill:#121a1f;stroke:#26343c;stroke-width:2}
+      .node-warm{fill:#121a1f;stroke:#ffb000;stroke-width:2}
+      .node-cool{fill:#121a1f;stroke:#46d9e8;stroke-width:2}
+      .flow{fill:none;stroke:#46d9e8;stroke-width:3;marker-end:url(#arrow)}
+      .sync{fill:none;stroke:#ffb000;stroke-width:3;marker-end:url(#arrow)}
+      .minor{fill:#8a979c;font-size:16px}
+      .body{fill:#ece6d8;font-size:18px}
+      .heading{fill:#ffb000;font-size:22px}
+      .block-title{font-size:22px}
+    </style>
+  </defs>
+  <rect width="2100" height="970" fill="#0a0f12"/>
+  <rect width="2100" height="970" fill="url(#grid)"/>
+  <path d="M32 32H2068V938H32Z" fill="none" stroke="#26343c" stroke-width="2"/>
+  <text x="70" y="95" class="title" fill="#ffb000" font-size="48">personalRAG</text>
+  <text x="72" y="132" class="mono minor">C4 · NÍVEL 2 · CONTÊINERES E FLUXOS</text>
+
+  <!-- Trust boundaries -->
+  <path d="M340 182H740V860H340Z" fill="#0d1519" fill-opacity=".72" stroke="#8a979c" stroke-width="2" stroke-dasharray="9 8"/>
+  <path d="M820 182H1640V860H820Z" fill="#0d1519" fill-opacity=".58" stroke="#46d9e8" stroke-width="2" stroke-dasharray="9 8"/>
+  <text x="365" y="220" class="label" fill="#ece6d8" font-size="18">MÁQUINA LOCAL · macOS</text>
+  <text x="845" y="220" class="label" fill="#46d9e8" font-size="18">GOOGLE CLOUD · us-central1</text>
+
+  <!-- Local and external actors -->
+  <path class="node-cool" d="M70 360H282L304 382V468H70Z"/>
+  <text x="187" y="405" text-anchor="middle" class="label heading">EU :D</text>
+  <text x="187" y="438" text-anchor="middle" class="mono body">[pessoa]</text>
+
+  <path class="node" d="M70 590H282L304 612V698H70Z"/>
+  <text x="187" y="636" text-anchor="middle" class="label heading">bin/rag</text>
+  <text x="187" y="669" text-anchor="middle" class="mono minor">CLI · push / ingest / query</text>
+
+  <path class="node-warm" d="M385 300H685L707 322V410H385Z"/>
+  <text x="546" y="348" text-anchor="middle" class="label heading">AGENTES MCP</text>
+  <text x="546" y="382" text-anchor="middle" class="mono body">Claude Code · opencode</text>
+
+  <path class="node" d="M385 500H685L707 522V632H385Z"/>
+  <text x="546" y="548" text-anchor="middle" class="label heading">personalrag-proxy</text>
+  <text x="546" y="582" text-anchor="middle" class="mono minor">launchd · localhost:8765</text>
+  <text x="546" y="609" text-anchor="middle" class="mono minor">ponte HTTP para o Cloud Run</text>
+
+  <!-- Cloud services -->
+  <path class="node-warm" d="M875 300H1162L1184 322V425H875Z"/>
+  <text x="1029" y="348" text-anchor="middle" class="label heading">personalrag</text>
+  <text x="1029" y="382" text-anchor="middle" class="mono body">Cloud Run · serviço MCP</text>
+  <text x="1029" y="408" text-anchor="middle" class="mono minor">4 ferramentas</text>
+
+  <path class="node-cool" d="M1300 300H1582L1604 322V425H1300Z"/>
+  <text x="1452" y="348" text-anchor="middle" class="label block-title" fill="#46d9e8">FIRESTORE</text>
+  <text x="1452" y="382" text-anchor="middle" class="mono body">índice vetorial</text>
+  <text x="1452" y="408" text-anchor="middle" class="mono minor">documents · memory · meta</text>
+
+  <path class="node" d="M875 548H1162L1184 570V660H875Z"/>
+  <text x="1029" y="596" text-anchor="middle" class="label heading">Cloud Scheduler</text>
+  <text x="1029" y="630" text-anchor="middle" class="mono minor">dispara todo dia às 03:00</text>
+
+  <path class="node-warm" d="M1300 548H1582L1604 570V660H1300Z"/>
+  <text x="1452" y="596" text-anchor="middle" class="label heading">personalrag-sync</text>
+  <text x="1452" y="630" text-anchor="middle" class="mono minor">Cloud Run Job · sync-gcs</text>
+
+  <path class="node-cool" d="M1300 738H1582L1604 760V850H1300Z"/>
+  <text x="1452" y="786" text-anchor="middle" class="label block-title" fill="#46d9e8">CLOUD STORAGE</text>
+  <text x="1452" y="820" text-anchor="middle" class="mono body">personalrag-sources · *.md</text>
+
+  <path class="node" d="M1740 440H2010L2032 462V568H1740Z"/>
+  <text x="1886" y="486" text-anchor="middle" class="label heading">VERTEX AI</text>
+  <text x="1886" y="520" text-anchor="middle" class="mono minor">text-embedding-005</text>
+  <text x="1886" y="548" text-anchor="middle" class="mono minor">consulta + sincronização</text>
+
+  <!-- Relationships -->
+  <path class="flow" d="M304 390H350V345H385"/>
+  <text x="316" y="326" class="mono minor">usa</text>
+  <path class="flow" d="M187 468V590"/>
+  <text x="202" y="540" class="mono minor">executa</text>
+  <path class="flow" d="M546 410V500"/>
+  <text x="562" y="466" class="mono minor">HTTP /mcp</text>
+  <path class="flow" d="M707 550H790V362H875"/>
+  <text x="720" y="525" class="mono minor">MCP via HTTPS · IAM</text>
+  <path class="flow" d="M1184 362H1300"/>
+  <text x="1193" y="337" class="mono minor">busca híbrida</text>
+  <path class="flow" d="M1029 300V260H1886V440"/>
+  <text x="1452" y="247" text-anchor="middle" class="mono minor">embedding da consulta</text>
+  <path class="sync" d="M1184 604H1300"/>
+  <text x="1197" y="581" class="mono minor" fill="#ffb000">dispara</text>
+  <path class="sync" d="M1452 548V425"/>
+  <text x="1468" y="500" class="mono minor" fill="#ffb000">indexa · remove</text>
+  <path class="sync" d="M1452 738V660"/>
+  <text x="1468" y="707" class="mono minor" fill="#ffb000">lê .md e md5</text>
+  <path class="sync" d="M304 645H345V895H1452V850"/>
+  <text x="665" y="884" class="mono minor" fill="#ffb000">push · envia os Markdown versionados</text>
+  <path class="flow" d="M1604 604H1670V504H1740"/>
+  <text x="1620" y="583" class="mono minor">gera embeddings</text>
+
+  <path d="M70 910H2030" stroke="#26343c" stroke-width="2"/>
+  <circle cx="82" cy="936" r="5" fill="#46d9e8"/>
+  <text x="100" y="942" class="mono minor">leitura / consulta</text>
+  <path d="M362 936H410" stroke="#ffb000" stroke-width="3"/>
+  <text x="426" y="942" class="mono minor">ingestão / sincronização</text>
+  <text x="2030" y="942" text-anchor="end" class="mono minor">O TERMINAL DE GARAGEM · alexsandro.dev</text>
+</svg>

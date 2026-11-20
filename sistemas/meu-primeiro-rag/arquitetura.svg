@@ -106,5 +106,5 @@
   <text x="100" y="942" class="mono minor">leitura / consulta</text>
   <path d="M362 936H410" stroke="#ffb000" stroke-width="3"/>
   <text x="426" y="942" class="mono minor">ingestão / sincronização</text>
-  <text x="2030" y="942" text-anchor="end" class="mono minor">O TERMINAL DE GARAGEM · alexsandro.dev</text>
+  <text x="2030" y="942" text-anchor="end" class="mono minor">alexsandro.dev</text>
 </svg>

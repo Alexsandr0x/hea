@@ -1,5 +1,5 @@
 ---
-title: "meu primeiro RAG :D"
+title: "Meu primeiro RAG :D"
 date: 2026-11-20
 tags: ["RAG", "personalRAG", "arquitetura", "GCP"]
 ---
